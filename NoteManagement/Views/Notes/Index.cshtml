@@ -1,5 +1,201 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<NoteDto>
 @{
 }
+
+@*<table class="table">
+	<thead>
+		<tr>
+			<th>Başlık</th>
+			<th>İçerik</th>
+			<th>Tarih</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.Title</td>
+				<td>@item.Content</td>
+				<td>@item.NoteDate</td>
+			</tr>
+		}
+	</tbody>
+</table>
+*@
+
+
+<h1 class="title">Notlarım</h1>
+<a class="btn btn-primary" href="/Notes/AddNote">Ana Not Ekle</a>
+<ul class="wtree">
+	@foreach (var item in Model.Where(m => m.PredecessorNoteId == null).ToList())
+	{
+		<li>
+			<span>
+				@item.Title <br />@item.Content
+				<a class="btn btn-danger" href="/Notes/DeleteNote/@item.Id">Sil</a>
+				<a class="btn btn-primary" href="/Notes/AddNote/@item.Id">Alt Not Ekle</a>
+			</span>
+			@if (Model.Where(m => m.PredecessorNoteId == item.Id).ToList().Count > 0)
+			{
+				<ul>
+					@foreach (var subitem in Model.Where(m => m.PredecessorNoteId == item.Id).ToList())
+					{
+						<li>
+							<span>
+								@subitem.Title <br />@subitem.Content
+								<a class="btn btn-danger" href="/Notes/DeleteNote/@subitem.Id">Sil</a>								
+							</span>
+						</li>
+					}
+				</ul>
+			}
+		</li>
+	}
+
+	@*<li>
+		<span>Nivel 1</span>
+		<ul>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<span>Nivel 1</span>
+		<ul>
+			<li>
+				<span>Nivel 2</span>
+				<ul>
+					<li>
+						<span>Nivel 3</span>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>*@
+</ul>
+
+@*<h1 class="title">wtree</h1>
+<ul class="wtree">
+	<li>
+		<span>Nivel 1</span>
+	</li>
+	<li>
+		<span>Nivel 1</span>
+		<ul>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+			<li>
+				<span>Nivel 2</span>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<span>Nivel 1</span>
+		<ul>
+			<li>
+				<span>Nivel 2</span>
+				<ul>
+					<li>
+						<span>Nivel 3</span>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>*@
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		padding: 50px;
+		font-family: helvetica, arial, sans-serif;
+	}
+
+	ul {
+		margin-left: 20px;
+	}
+
+	.wtree li {
+		list-style-type: none;
+		margin: 10px 0 10px 10px;
+		position: relative;
+	}
+
+		.wtree li:before {
+			content: "";
+			position: absolute;
+			top: -10px;
+			left: -20px;
+			border-left: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
+			width: 20px;
+			height: 15px;
+		}
+
+		.wtree li:after {
+			position: absolute;
+			content: "";
+			top: 5px;
+			left: -20px;
+			border-left: 1px solid #ddd;
+			border-top: 1px solid #ddd;
+			width: 20px;
+			height: 100%;
+		}
+
+		.wtree li:last-child:after {
+			display: none;
+		}
+
+		.wtree li span {
+			display: block;
+			border: 1px solid #ddd;
+			padding: 10px;
+			color: #888;
+			text-decoration: none;
+		}
+
+			.wtree li span:hover, .wtree li span:focus {
+				background: #eee;
+				color: #000;
+				border: 1px solid #aaa;
+			}
+
+				.wtree li span:hover + ul li span, .wtree li span:focus + ul li span {
+					background: #eee;
+					color: #000;
+					border: 1px solid #aaa;
+				}
+
+				.wtree li span:hover + ul li:after, .wtree li span:hover + ul li:before, .wtree li span:focus + ul li:after, .wtree li span:focus + ul li:before {
+					border-color: #aaa;
+				}
+</style>

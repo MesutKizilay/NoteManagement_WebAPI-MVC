@@ -11,8 +11,8 @@ namespace Business.Abstract
     {
         List<Note> GetAll();
         Note GetById(int noteId);
-        void Add(Note Note);
-        void Update(Note Note);
-        void Delete(Note Note);
+        void AddNote(Note note);
+        void UpdateNote(Note note);
+        void DeleteNote(Note note);
     }
 }
